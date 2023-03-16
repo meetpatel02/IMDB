@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/' : (context)=>  Splash(),
         MyRoutes.signInRoute: (context) =>  SignInScreen(),
         MyRoutes.registerRoute : (context) =>  RegisterScreen(),
-        MyRoutes.homeRoute : (context) =>  HomeScreen(),
+        MyRoutes.homeRoute : (context) =>  MovieList(),
       },
     );
   }
