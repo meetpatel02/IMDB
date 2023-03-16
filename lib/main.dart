@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive/hive.dart';
 import 'package:imdb_task/pages/home.dart';
-import 'package:imdb_task/pages/home1.dart';
-import 'package:imdb_task/pages/home_screen.dart';
 import 'package:imdb_task/pages/register_screen.dart';
 import 'package:imdb_task/pages/signin_screen.dart';
 import 'package:imdb_task/pages/splash_screen.dart';

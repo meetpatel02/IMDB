@@ -19,6 +19,7 @@ class _MovieListState extends State<MovieList> {
   bool isLoading = false;
   bool hasMore = true;
   bool isFirstLoad = true;
+  int page = 1;
   List<Movie> movieList = [];
   final searchController = TextEditingController();
 
@@ -45,10 +46,10 @@ class _MovieListState extends State<MovieList> {
     String? url;
     if (searchController.text.isEmpty) {
       url =
-      'https://api.themoviedb.org/3/movie/popular?api_key=b4a549abb798b19dbb7e63335d135053&page=${movieList.length ~/ 20 + 1}';
+      'https://api.themoviedb.org/3/movie/popular?api_key=b4a549abb798b19dbb7e63335d135053&page=${movieList.length ~/ 20 + page}';
     } else {
       url =
-      'https://api.themoviedb.org/3/search/movie?api_key=b4a549abb798b19dbb7e63335d135053&query=${searchController.text.trim()}&page=${movieList.length ~/ 20 + 1}';
+      'https://api.themoviedb.org/3/search/movie?api_key=b4a549abb798b19dbb7e63335d135053&query=${searchController.text.trim()}&page=${movieList.length ~/ 20 + page}';
     }
     final response = await http.get(Uri.parse(url));
 
@@ -79,15 +80,16 @@ class _MovieListState extends State<MovieList> {
   }
   Future<void> _resetMovies() async {
     setState(() {
+      searchController.clear();
       isLoading = true;
       hasMore = true;
       isFirstLoad = true;
+      page = 1;
       movieList.clear();
     });
 
     await getPopularMovies();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
