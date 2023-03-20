@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:imdb_task/model/register_model.dart';
 import 'package:imdb_task/route/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../box/boxes.dart';
 
@@ -47,16 +49,21 @@ class _SplashState extends State<Splash> {
       ),
     );
   }
+
 }
 
 class Splash1 {
-  void splash(BuildContext context) {
+  void splash(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final box = Boxes.getData();
-    if(box.isEmpty){
-      Timer(const Duration(seconds: 3), () => Get.toNamed(MyRoutes.signInRoute));
-    }else{
+    String? user = '';
+    if(prefs.getString('email') == prefs.getString('email')){
       Timer(const Duration(seconds: 3), () => Get.toNamed(MyRoutes.homeRoute));
+    }if(prefs.getString('email') == null){
+      Timer(const Duration(seconds: 3), () => Get.toNamed(MyRoutes.signInRoute));
     }
-
+    // if(box.isEmpty){
+    //   Timer(const Duration(seconds: 3), () => Get.toNamed(MyRoutes.signInRoute));
+    // }
   }
 }

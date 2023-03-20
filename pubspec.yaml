@@ -41,8 +41,12 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.0.11
   hive_flutter: ^1.1.0
-  http:
+  http: ^0.13.5
   flutter_spinkit:
+  shared_preferences:
+  permission_handler: ^10.2.0
+  internet_connection_checker:
+  connectivity_plus:
 dev_dependencies:
   flutter_test:
     sdk: flutter

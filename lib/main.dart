@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive/hive.dart';
+import 'package:imdb_task/model/liked_movie.dart';
+import 'package:imdb_task/model/movie_model.dart';
 import 'package:imdb_task/pages/home.dart';
+import 'package:imdb_task/pages/like_screen.dart';
 import 'package:imdb_task/pages/register_screen.dart';
 import 'package:imdb_task/pages/signin_screen.dart';
 import 'package:imdb_task/pages/splash_screen.dart';
@@ -15,7 +18,9 @@ void main() async{
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(RegisterModelAdapter());
+  Hive.registerAdapter(LikedMovieAdapter());
   await Hive.openBox<RegisterModel>('registerUser');
+  await Hive.openBox<LikedMovie>('liked_movies');
   runApp(const MyApp());
 }
 
@@ -33,6 +38,7 @@ class MyApp extends StatelessWidget {
         MyRoutes.signInRoute: (context) =>  SignInScreen(),
         MyRoutes.registerRoute : (context) =>  RegisterScreen(),
         MyRoutes.homeRoute : (context) =>  MovieList(),
+        MyRoutes.likeRoute : (context) =>  LikeScreen(),
       },
     );
   }

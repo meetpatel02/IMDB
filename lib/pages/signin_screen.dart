@@ -187,26 +187,46 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
 
                     ///SignIn button
+                    // Container(
+                    //   height: 55,
+                    //   width: 400,
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(3),
+                    //       border: Border.all(
+                    //           color: Colors.black.withOpacity(0.75))),
+                    //   child: CupertinoButton(
+                    //     borderRadius: BorderRadius.circular(3),
+                    //     onPressed: () {
+                    //       moveToHomeScreen(context);
+                    //     },
+                    //     color: Colors.yellow.shade700,
+                    //     child: Text(
+                    //       AppString.signIn.replaceAll('-', ' '),
+                    //       style: TextStyle(
+                    //           color: Colors.black, fontWeight: FontWeight.w500),
+                    //     ),
+                    //   ),
+                    // ),
                     Container(
                       height: 55,
                       width: 400,
                       decoration: BoxDecoration(
+                          color:  Colors.yellow.shade700,
                           borderRadius: BorderRadius.circular(3),
                           border: Border.all(
                               color: Colors.black.withOpacity(0.75))),
-                      child: CupertinoButton(
-                        borderRadius: BorderRadius.circular(3),
+                      child:TextButton(
                         onPressed: () {
                           moveToHomeScreen(context);
                         },
-                        color: Colors.yellow.shade700,
-                        child: Text(
-                          AppString.signIn.replaceAll('-', ' '),
+                        child: const Text(
+                          AppString.signIn,
+                          softWrap: true,
                           style: TextStyle(
+                              fontSize: 16,
                               color: Colors.black, fontWeight: FontWeight.w500),
                         ),
-                      ),
-                    ),
+                      ),),
                     const SizedBox(
                       height: 20,
                     ),
@@ -232,29 +252,28 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    ///createNewYourImdbAccount Button
                     Container(
-                      height: 55,
-                      width: 400,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          border: Border.all(
-                              color: Colors.black.withOpacity(0.75))),
-                      child: CupertinoButton(
-                        borderRadius: BorderRadius.circular(3),
-                        onPressed: () {
-                          Get.toNamed(MyRoutes.registerRoute);
-                        },
-                        color: const Color(0xffE6E7E7),
-                        child: const Text(
-                          AppString.createNewYourImdbAccount,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
+                        height: 55,
+                        width: 400,
+                        decoration: BoxDecoration(
+                            color: const Color(0xffE6E7E7),
+                            borderRadius: BorderRadius.circular(3),
+                            border: Border.all(
+                                color: Colors.black.withOpacity(0.75))),
+                        child:TextButton(
+                          onPressed: () {
+                            Get.toNamed(MyRoutes.registerRoute);
+                          },
+                          child: const Text(
+                            AppString.createNewYourImdbAccount,
+                            softWrap: true,
+                            style: TextStyle(
+                              fontSize: 16,
+                                color: Colors.black, fontWeight: FontWeight.w500),
+                          ),
+                        ),),
+
 
                     const SizedBox(
                       height: 40,

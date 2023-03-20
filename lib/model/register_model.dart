@@ -10,5 +10,6 @@ class RegisterModel extends HiveObject{
   @HiveField(2)
   String? password;
 
-  RegisterModel({this.name, this.email, this.password});
+
+  RegisterModel({this.name, this.email, this.password,});
 }

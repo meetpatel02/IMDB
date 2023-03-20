@@ -1,4 +1,3 @@
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:imdb_task/model/register_model.dart';
 import 'package:imdb_task/route/routes.dart';
 import 'package:imdb_task/utils/app_string.dart';
 import 'package:imdb_task/utils/custome_textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -141,23 +141,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
 
               ///create account button
+
               Container(
                 height: 55,
                 width: 400,
                 decoration: BoxDecoration(
+                    color: Colors.yellow.shade700,
                     borderRadius: BorderRadius.circular(3),
-                    border: Border.all(color: Colors.black.withOpacity(0.75))
-                ),
-                child: CupertinoButton(
-                  borderRadius: BorderRadius.circular(3),
+                    border: Border.all(color: Colors.black.withOpacity(0.75))),
+                child: TextButton(
                   onPressed: () {
                     moveToHomeScreen(context);
                   },
-                  color: Colors.yellow.shade700,
                   child: const Text(
                     AppString.createYourImdbAccount,
-                    style:
-                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                    softWrap: true,
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -190,27 +192,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(
                 height: 15,
               ),
+
               Container(
                 height: 55,
                 width: 400,
                 decoration: BoxDecoration(
+                    color: const Color(0xffE6E7E7),
                     borderRadius: BorderRadius.circular(3),
-                    border: Border.all(color: Colors.black.withOpacity(0.75))
-                ),
-                child: CupertinoButton(
-                  borderRadius: BorderRadius.circular(3),
+                    border: Border.all(color: Colors.black.withOpacity(0.75))),
+                child: TextButton(
                   onPressed: () {
                     Get.toNamed(MyRoutes.signInRoute);
                   },
-                  color: const Color(0xffE6E7E7),
                   child: const Text(
                     AppString.signInNow,
-                    style:
-                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                    softWrap: true,
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
-
               const SizedBox(
                 height: 30,
               ),
@@ -253,7 +256,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),
@@ -261,7 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  moveToHomeScreen(BuildContext context) {
+  moveToHomeScreen(BuildContext context) async {
     ///name snackBar
     final nameSnackBar = SnackBar(
       duration: Duration(milliseconds: 600),
@@ -291,7 +296,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ///password snackBar
     final passwordSnackBar = SnackBar(
       duration: Duration(milliseconds: 600),
-
       elevation: 0,
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
@@ -305,7 +309,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ///email check
     final emailCheckSnackBar = SnackBar(
       duration: Duration(milliseconds: 600),
-
       elevation: 0,
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
@@ -341,6 +344,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         contentType: ContentType.warning,
       ),
     );
+    ///Register Successfully
+    final registerSuccessfully = SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      showCloseIcon: false,
+      content: AwesomeSnackbarContent(
+        title: 'Success!',
+        message: 'Register Successfully',
+        contentType: ContentType.success,
+      ),
+    );
+
     ///Conditions
     if (nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
@@ -365,20 +381,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ..showSnackBar(passwordCheckSnackBar);
     }
     else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // prefs.setBool('isUserLogin', true);
       final data1 = RegisterModel(
           name: nameController.text.trim().toString(),
           email: emailController.text.trim().toString(),
           password: passwordController.text.trim().toString());
       final box = Boxes.getData();
-      box.add(data1);
-      data1.save();
-      print(box);
-      Get.offAndToNamed(MyRoutes.signInRoute)?.then((value) {
-        nameController.clear();
-        emailController.clear();
-        passwordController.clear();
-      });
+      final data = Boxes.getData().values.toList().cast<RegisterModel>();
+      var isEmailExist = data
+          .where((element) => element.email == emailController.text.trim().toString());
+      if(isEmailExist.isNotEmpty){
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(userEmailCheckSnackBar);
+      }else{
+        box.add(data1);
+        data1.save();
+        prefs.setString('email', emailController.text.trim().toString());
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(registerSuccessfully);
+        Get.offAndToNamed(MyRoutes.signInRoute)?.then((value) {
+          nameController.clear();
+          emailController.clear();
+          passwordController.clear();
+        });
+      }
     }
-
   }
 }
