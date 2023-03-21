@@ -21,6 +21,7 @@ void main() async{
   Hive.registerAdapter(LikedMovieAdapter());
   await Hive.openBox<RegisterModel>('registerUser');
   await Hive.openBox<LikedMovie>('liked_movies');
+  await Hive.openBox ('like');
   runApp(const MyApp());
 }
 

@@ -25,5 +25,8 @@ class LikedMovie {
   @HiveField(6)
    var vote_count;
 
-  LikedMovie({this.id, this.title,  this.posterPath,this.original_language,this.vote_count,this.release_date,this.vote_average});
+  @HiveField(7)
+   var email;
+
+  LikedMovie({this.id, this.title,  this.posterPath,this.original_language,this.vote_count,this.release_date,this.vote_average,this.email});
 }

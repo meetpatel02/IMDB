@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:imdb_task/box/boxes.dart';
+import 'package:imdb_task/model/liked_movie.dart';
 import 'package:imdb_task/model/register_model.dart';
 import 'package:imdb_task/route/routes.dart';
 import 'package:imdb_task/utils/app_string.dart';
@@ -387,6 +388,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           name: nameController.text.trim().toString(),
           email: emailController.text.trim().toString(),
           password: passwordController.text.trim().toString());
+
       final box = Boxes.getData();
       final data = Boxes.getData().values.toList().cast<RegisterModel>();
       var isEmailExist = data

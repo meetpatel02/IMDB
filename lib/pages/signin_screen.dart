@@ -8,6 +8,7 @@ import 'package:imdb_task/model/register_model.dart';
 import 'package:imdb_task/route/routes.dart';
 import 'package:imdb_task/utils/app_string.dart';
 import 'package:imdb_task/utils/custome_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -336,7 +337,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  moveToHomeScreen(BuildContext context) {
+  moveToHomeScreen(BuildContext context) async {
     ///email snackBar
     final emailSnackBar = SnackBar(
       duration: Duration(seconds: 2),
@@ -450,6 +451,8 @@ class _SignInScreenState extends State<SignInScreen> {
           ..hideCurrentSnackBar()
           ..showSnackBar(userPasswordCheckSnackBar);
       } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('email', emailController.text.trim().toString());
         Get.toNamed(MyRoutes.homeRoute)?.then((value) {
           emailController.clear();
           passwordController.clear();

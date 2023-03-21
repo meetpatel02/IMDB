@@ -4,12 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 import 'package:imdb_task/box/boxes.dart';
 import 'package:imdb_task/model/liked_movie.dart';
 import 'package:imdb_task/model/movie_model.dart';
-import 'package:imdb_task/model/register_model.dart';
 import 'package:imdb_task/pages/like_screen.dart';
 import 'package:imdb_task/route/routes.dart';
 import 'package:imdb_task/utils/app_string.dart';
@@ -28,9 +27,9 @@ class _MovieListState extends State<MovieList> {
   int page = 1;
   List<Movie> movieList = [];
   List<LikedMovie> _likedMovies = [];
-  List _likedMovie = [];
   final searchController = TextEditingController();
-
+  var isLiked = false;
+  bool isFavourite = false;
 
   @override
   void initState() {
@@ -159,6 +158,7 @@ class _MovieListState extends State<MovieList> {
                                   ),
                                 );
                               } else {
+
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -268,14 +268,21 @@ class _MovieListState extends State<MovieList> {
                                                       ],
                                                     ),
                                                     IconButton(
-                                                        onPressed: () {
-                                                          addLikedMovie(movieList[index]);
+                                                        onPressed: () async {
+
+                                                          // if(isLike){
+                                                          //  await box.delete(index);
+                                                          // }else{
+                                                          //  await box.put(index, _likedMovies);
+                                                          // }
+
+                                                          addLikedMovie(
+                                                              movieList[index]);
                                                         },
-                                                        icon: Icon(Icons.favorite_border,color: Colors.white,
-                                                      // isLiked ? Icons.favorite : Icons.favorite_border,
-                                                      // color: isLiked ? Colors.red : Colors.white,
-                                                      //     Icons.favorite_border,
-                                                      //     color: Colors.white,
+                                                        icon: Icon(
+                                                          // Icons.favorite_border,color: Colors.white,
+                                                          isLiked ? Icons.favorite : Icons.favorite_border,
+                                                      color: isLiked ? Colors.yellow.shade700 : Colors.white,
                                                         ))
                                                   ],
                                                 ),
@@ -319,7 +326,9 @@ class _MovieListState extends State<MovieList> {
     });
   }
   Future<void> addLikedMovie(Movie movie) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final  LikedMovie likedMovie = LikedMovie(
+      email: prefs.get('email'),
       id: movie.id,
       title: movie.title,
       posterPath: movie.imagePath,
@@ -330,6 +339,8 @@ class _MovieListState extends State<MovieList> {
     );
     final box = Boxes1.getData();
     if (!box.containsKey(movie.id)) {
+
+      print(likedMovie.email);
       box.put(movie.id, likedMovie);
     } else {
       box.delete(movie.id);
